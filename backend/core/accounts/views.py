@@ -21,15 +21,13 @@ class SignUpAPIView(APIView):
             user = serializer.save()
             otp = generate_otp()
             send_otp_email(user.email, otp)
-            store_otp_in_cache(user.email, otp)
+            store_otp_in_cache(user.email, otp, 60)
 
             return Response({
                 'message': 'OTP sent to your email. Please verify within 30 seconds.',
                 'user_id': user.id
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 class LoginView(APIView):
@@ -87,7 +85,6 @@ class OTPVerificationAPIView(APIView):
         if cached_otp != otp_provided:
             return Response({'error': 'Invalid OTP. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # OTP is correct; complete the registration
         user.email_verified = True
         user.save()
 
@@ -112,6 +109,17 @@ class OTPVerificationAPIView(APIView):
         )
         return response
 
+class LogoutAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        response = Response({
+            'message': 'Logout successful'
+        }, status=status.HTTP_200_OK)
+        
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        
+        return response
+
 
 class SendOTPAgainAPIView(APIView):
     permission_classes = [AllowAny]
@@ -122,6 +130,23 @@ class SendOTPAgainAPIView(APIView):
 
         otp = generate_otp()
         send_otp_email(user.email, otp)
-        store_otp_in_cache(user.email, otp)
+        store_otp_in_cache(user.email, otp, 60)
 
         return Response({'message': 'New OTP sent to your email. Please verify within 30 seconds.'}, status=status.HTTP_200_OK)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
