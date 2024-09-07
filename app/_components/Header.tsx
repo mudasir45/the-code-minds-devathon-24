@@ -8,16 +8,11 @@ import { useCookies } from 'react-cookie'; // Import useCookies from react-cooki
 
 const Header = () => {
   const [headerOpen, setHeaderOpen] = useState(false);
-  const [cartCount, setCartCount] = useState<number>(0);
   const [role, setRole] = useState<string | null>(null); // State to store user role
   const [cookies] = useCookies(['userRole']); // Fetch userRole from cookies
 
   useEffect(() => {
-    const cartItems = localStorage.getItem('cartItems');
-    if (cartItems) {
-      const items = JSON.parse(cartItems);
-      setCartCount(items.length);
-    }
+
 
     // Set user role from cookies
     // setRole(cookies.userRole || null);
@@ -34,6 +29,7 @@ const Header = () => {
     { href: '/current-bills', label: 'View Current Bills', roles: ['resident'] },
     { href: '/payment-history', label: 'Payment History', roles: ['resident'] },
     { href: '/make-payment', label: 'Make Payment', roles: ['resident'] },
+    { href: '/profile', label: 'Profile', roles: ['resident','admin','customer-support'] },
   ];
 
   const filteredLinks = menuLinks.filter(link => !link.roles || link.roles.includes(role!));

@@ -34,7 +34,7 @@ export default function Login() {
     setError(null);
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://5f69-58-27-193-246.ngrok-free.app/api/auth/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,9 @@ export default function Login() {
       });
 
       if (response.ok) {
-        router.push('/');
+        const data = await response.json()
+        console.log("response : ",data)
+        // router.push('/');
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Login failed.');

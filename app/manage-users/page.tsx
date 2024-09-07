@@ -9,7 +9,6 @@ interface UserProps {
   email: string;
   house_no: string;
   user_role: string;
-  is_ban: string;
   user_id: string;
 }
 
@@ -20,7 +19,6 @@ const dummyUsers: UserProps[] = [
       email: "alice.johnson@example.com",
       house_no: "101",
       user_role: "Admin",
-      is_ban: "No",
       user_id: "1"
     },
     {
@@ -28,7 +26,6 @@ const dummyUsers: UserProps[] = [
       email: "bob.smith@example.com",
       house_no: "102",
       user_role: "User",
-      is_ban: "No",
       user_id: "2"
     },
     {
@@ -36,7 +33,6 @@ const dummyUsers: UserProps[] = [
       email: "carol.white@example.com",
       house_no: "103",
       user_role: "Moderator",
-      is_ban: "Yes",
       user_id: "3"
     },
     {
@@ -44,7 +40,6 @@ const dummyUsers: UserProps[] = [
       email: "david.brown@example.com",
       house_no: "104",
       user_role: "User",
-      is_ban: "No",
       user_id: "4"
     },
     {
@@ -52,7 +47,6 @@ const dummyUsers: UserProps[] = [
       email: "emma.davis@example.com",
       house_no: "105",
       user_role: "User",
-      is_ban: "No",
       user_id: "5"
     }
   ];
