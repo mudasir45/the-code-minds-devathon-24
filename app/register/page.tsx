@@ -3,6 +3,7 @@
 
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -130,7 +131,19 @@ export default function Register() {
             {loading ? 'Loading...' : 'Register'}
           </button>
         </form>
+        <div className="mt-4 text-center">
+          <p className="text-sm text-black">
+            Already have an account?{' '}
+            <Link href="/login" className="text-blue-500 hover:underline">
+              Login here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 }
+
+
+// I am creating a Next.js Tailwind website with a black and white theme for my Society Management System project. The problem statement is that the society lacks a direct connection with WAPDA/LESCO for electricity, which is distributed among society members. Similarly, the system manages gas and water billing. The challenge is to create a web-based solution to automate and streamline these processes.
+// For authentication, we have three roles: admin, customer support, and residents. On the frontend (we are only building the frontend), the user interface provides a centralized platform for administrators to generate and manage bills, as well as view the payment status of bills. Residents can view their current and past bills, download them as PDFs, and make payments. Bill due dates should be handled accordingly.
