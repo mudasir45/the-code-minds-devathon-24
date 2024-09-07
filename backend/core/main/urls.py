@@ -8,9 +8,9 @@ from .views import (PaymentRecordListCreateView, PaymentRecordDetailView,
 
 
 urlpatterns = [
-    path('paymentrecords/', PaymentRecordListCreateView.as_view(),
+    path('payments/', PaymentRecordListCreateView.as_view(),
          name='paymentrecord-list-create'),
-    path('paymentrecords/<str:pk>/', PaymentRecordDetailView.as_view(),
+    path('payments/<str:pk>/', PaymentRecordDetailView.as_view(),
          name='paymentrecord-detail'),
 
     path('notifications/', NotificationListCreateView.as_view(),
@@ -23,16 +23,16 @@ urlpatterns = [
     path('chathistory/<str:pk>/', ChatHistoryDetailView.as_view(),
          name='chathistory-detail'),
 
-    path('utilitybills/', UtilityBillListCreateView.as_view(),
-         name='utilitybill-list-create'),
+    path('bills/', UtilityBillListCreateView.as_view(),
+         name='bill-list-create'),
     path('utilitybills/<str:pk>/', UtilityBillDetailView.as_view(),
          name='utilitybill-detail'),
 
     path('events/', EventListCreateView.as_view(), name='event-list-create'),
     path('events/<str:pk>/', EventDetailView.as_view(), name='event-detail'),
 
-    path('digitalannouncements/', DigitalAnnouncementListCreateView.as_view(),
+    path('announcements/', DigitalAnnouncementListCreateView.as_view(),
          name='digitalannouncement-list-create'),
-    path('digitalannouncements/<str:pk>/',
+    path('announcements/<str:pk>/',
          DigitalAnnouncementDetailView.as_view(), name='digitalannouncement-detail'),
 ]
