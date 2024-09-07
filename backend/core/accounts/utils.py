@@ -19,6 +19,6 @@ def send_otp_email(email, otp):
     send_mail(subject, message, email_from, [email])
 
 
-def store_otp_in_cache(email, otp, timeout=60):
+def store_otp_in_cache(email, otp, timeout):
     """Store OTP in cache with a 30-second expiry"""
     cache.set(f'otp_{email}', otp, timeout)
