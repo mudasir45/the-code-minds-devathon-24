@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('bills/', UtilityBillListCreateView.as_view(),
          name='bill-list-create'),
-    path('utilitybills/<str:pk>/', UtilityBillDetailView.as_view(),
+    path('bills/<str:pk>/', UtilityBillDetailView.as_view(),
          name='utilitybill-detail'),
 
     path('events/', EventListCreateView.as_view(), name='event-list-create'),

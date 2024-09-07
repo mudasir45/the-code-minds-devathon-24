@@ -3,15 +3,19 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .models import PaymentRecord, Notification, ChatHistory, UtilityBill, Event, DigitalAnnouncement
-from .serializers import (PaymentRecordSerializer, NotificationSerializer, ChatHistorySerializer,
-                          UtilityBillSerializer, EventSerializer, DigitalAnnouncementSerializer)
-
-# PaymentRecord Views
+from .serializers import *
+from accounts.permissions import *
+from rest_framework import permissions
 
 
 class PaymentRecordListCreateView(APIView):
+
     def get(self, request):
-        records = PaymentRecord.objects.all()
+        user = request.user
+        if user.role == "resident":
+            records = PaymentRecord.objects.filter(payer=user)
+        else:
+            records = PaymentRecord.objects.all()
         serializer = PaymentRecordSerializer(records, many=True)
         return Response(serializer.data)
 
@@ -24,12 +28,15 @@ class PaymentRecordListCreateView(APIView):
 
 
 class PaymentRecordDetailView(APIView):
+
     def get(self, request, pk):
+        permission_classes = [IsResident]
         record = get_object_or_404(PaymentRecord, pk=pk)
         serializer = PaymentRecordSerializer(record)
         return Response(serializer.data)
 
     def put(self, request, pk):
+        permission_classes = [IsAdmin]
         record = get_object_or_404(PaymentRecord, pk=pk)
         serializer = PaymentRecordSerializer(record, data=request.data)
         if serializer.is_valid():
@@ -38,11 +45,10 @@ class PaymentRecordDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
+        permission_classes = [IsAdmin]
         record = get_object_or_404(PaymentRecord, pk=pk)
         record.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-# Notification Views
 
 
 class NotificationListCreateView(APIView):
@@ -78,8 +84,6 @@ class NotificationDetailView(APIView):
         notification.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# ChatHistory Views
-
 
 class ChatHistoryListCreateView(APIView):
     def get(self, request):
@@ -114,12 +118,14 @@ class ChatHistoryDetailView(APIView):
         chat.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# UtilityBill Views
-
 
 class UtilityBillListCreateView(APIView):
     def get(self, request):
+        user = request.user
         bills = UtilityBill.objects.all()
+
+        if user.role == "resident":
+            bills = UtilityBill.objects.filter(user=user)
         serializer = UtilityBillSerializer(bills, many=True)
         return Response(serializer.data)
 
@@ -149,8 +155,6 @@ class UtilityBillDetailView(APIView):
         bill = get_object_or_404(UtilityBill, pk=pk)
         bill.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-# Event Views
 
 
 class EventListCreateView(APIView):
