@@ -13,3 +13,9 @@ class SignUpSerializer(serializers.Serializer):
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError("Email already exists")
         return email
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'house_number', 'role', 'email', 'is_staff']

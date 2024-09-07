@@ -12,7 +12,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
 from .permissions import IsAdminOrSupportTeam
-from .serializers import SignUpSerializer
+from .serializers import SignUpSerializer, UserSerializer
 from .utils import generate_otp, send_otp_email, store_otp_in_cache
 
 
@@ -153,9 +153,10 @@ class AdminOrSupportTeamView(APIView):
     
     
     
-    
-    
-    
+def UserList(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
     
     
     
