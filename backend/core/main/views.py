@@ -6,8 +6,6 @@ from .models import PaymentRecord, Notification, ChatHistory, UtilityBill, Event
 from .serializers import (PaymentRecordSerializer, NotificationSerializer, ChatHistorySerializer,
                           UtilityBillSerializer, EventSerializer, DigitalAnnouncementSerializer)
 
-# PaymentRecord Views
-
 
 class PaymentRecordListCreateView(APIView):
     def get(self, request):
@@ -114,8 +112,6 @@ class ChatHistoryDetailView(APIView):
         chat.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# UtilityBill Views
-
 
 class UtilityBillListCreateView(APIView):
     def get(self, request):
@@ -149,8 +145,6 @@ class UtilityBillDetailView(APIView):
         bill = get_object_or_404(UtilityBill, pk=pk)
         bill.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-# Event Views
 
 
 class EventListCreateView(APIView):
