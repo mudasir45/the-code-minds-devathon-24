@@ -26,9 +26,21 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
+    
     house_number = models.CharField(max_length=10, null=True, blank=True)
     email_verified = models.BooleanField(default=False)
     email = models.EmailField(unique=True)
+    
+    ADMIN = 'admin'
+    SUPPORT_TEAM = 'support_team'
+    RESIDENT = 'resident'
+    ROLE_CHOICES = [
+        (SUPPORT_TEAM, 'support_team'),
+        (RESIDENT, 'resident'),
+        (ADMIN, 'admin'),
+    ]
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=RESIDENT)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -36,3 +48,4 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
