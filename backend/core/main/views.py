@@ -9,7 +9,6 @@ from rest_framework import permissions
 
 
 class PaymentRecordListCreateView(APIView):
-    permission_classes = [IsAdminOrSupportTeam]
 
     def get(self, request):
         user = request.user
@@ -51,8 +50,6 @@ class PaymentRecordDetailView(APIView):
         record.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# Notification Views
-
 
 class NotificationListCreateView(APIView):
     def get(self, request):
@@ -86,8 +83,6 @@ class NotificationDetailView(APIView):
         notification = get_object_or_404(Notification, pk=pk)
         notification.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-# ChatHistory Views
 
 
 class ChatHistoryListCreateView(APIView):
@@ -126,7 +121,11 @@ class ChatHistoryDetailView(APIView):
 
 class UtilityBillListCreateView(APIView):
     def get(self, request):
+        user = request.user
         bills = UtilityBill.objects.all()
+
+        if user.role == "resident":
+            bills = UtilityBill.objects.filter(user=user)
         serializer = UtilityBillSerializer(bills, many=True)
         return Response(serializer.data)
 

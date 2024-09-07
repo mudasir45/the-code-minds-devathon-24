@@ -24,8 +24,9 @@ class SignUpAPIView(APIView):
         if serializer.is_valid():
             # Temporarily store user details in cache with a token
             token = str(uuid.uuid4())  # Generate a unique token
-            cache.set(token, serializer.validated_data, timeout=300)  # Store for 5 minutes
-            
+            cache.set(token, serializer.validated_data,
+                      timeout=300)  # Store for 5 minutes
+
             # Generate OTP and send it
             otp = generate_otp()
             send_otp_email(serializer.validated_data['email'], otp)
@@ -53,11 +54,11 @@ class LoginView(APIView):
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
-            
+
             return Response({
                 'message': 'Login successful',
-                'access_token': str(refresh.access_token),  
-                'refresh_token': str(refresh), 
+                'access_token': str(refresh.access_token),
+                'refresh_token': str(refresh),
             }, status=status.HTTP_200_OK)
 
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
@@ -101,22 +102,22 @@ class OTPVerificationAPIView(APIView):
         refresh = RefreshToken.for_user(user)
         response = Response({
             'message': 'SignUp Successful',
-            'access_token': str(refresh.access_token),  
-            'refresh_token': str(refresh), 
+            'access_token': str(refresh.access_token),
+            'refresh_token': str(refresh),
         }, status=status.HTTP_200_OK)
 
         return response
-    
-    
+
+
 class LogoutAPIView(APIView):
     def post(self, request, *args, **kwargs):
         response = Response({
             'message': 'Logout successful'
         }, status=status.HTTP_200_OK)
-        
+
         response.delete_cookie('access_token')
         response.delete_cookie('refresh_token')
-        
+
         return response
 
 
@@ -125,7 +126,7 @@ class SendOTPAgainAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         token = request.data.get('token')
-        
+
         # Check if signup data is still cached
         signup_data = cache.get(token)
         if signup_data is None:
@@ -140,24 +141,9 @@ class SendOTPAgainAPIView(APIView):
             'message': 'New OTP sent to your email. Please verify within 5 minutes.'
         }, status=status.HTTP_200_OK)
 
-    
-    
+
 class AdminOrSupportTeamView(APIView):
     permission_classes = [IsAdminOrSupportTeam, IsAuthenticated]
 
     def get(self, request):
         return Response({"message": "Welcome Admin or Support Team!"})
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
