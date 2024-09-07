@@ -1,9 +1,9 @@
-"use client"
 // pages/login.tsx
-
+"use client"
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useCookies } from 'react-cookie';
 
 interface LoginForm {
   email: string;
@@ -18,6 +18,7 @@ export default function Login() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [cookies, setCookie] = useCookies(['access_token']); // useCookies hook
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -34,7 +35,7 @@ export default function Login() {
     setError(null);
 
     try {
-      const response = await fetch('https://5f69-58-27-193-246.ngrok-free.app/api/auth/login/', {
+      const response = await fetch('https://1ca1-58-27-193-246.ngrok-free.app/api/auth/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,9 +44,14 @@ export default function Login() {
       });
 
       if (response.ok) {
-        const data = await response.json()
-        console.log("response : ",data)
-        // router.push('/');
+        const data = await response.json();
+        const token = data.access_token;
+
+        // Set the token in cookies
+        setCookie('access_token', token, { path: '/', maxAge: 3600 }); // maxAge is 1 hour
+
+        // Redirect to home or desired page
+        router.push('/');
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Login failed.');
