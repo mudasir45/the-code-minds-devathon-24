@@ -19,7 +19,7 @@ class PaymentRecord(models.Model):
     payment_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user} - {self.amount}'
+        return f'{self.payer} - {self.amount}'
 
 
 class Notification(models.Model):
